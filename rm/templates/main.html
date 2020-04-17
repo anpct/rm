@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <title>REMIND ME!!!</title>
+    <style>
+    lable{
+      color: white;
+    }
+    </style>
+</head>
+<body style="background-color: #454d55;">
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-end">
+  <ul class="navbar-nav  ">
+    <li class="nav-item">
+      <a class="nav-link" href="#" style="color: blue;">REMIND ME!!</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for("logout") }}"  style="color: blue;">LOGOUT</a>
+    </li>
+    <li class="nav-item ">
+      <input type="text" name="s" id="s"  class="form-control mr-sm-2" onkeyup="myFunction()" placeholder="SEARCH">
+    </li>
+  </ul>
+</nav>
+<form method="post">
+<lable for="date">Select the date:
+            </lable>
+            <input type=date name="date" id="date" class="form-control" required>
+            <br>
+            <lable for="rem">Enter the message:
+            </lable>
+            <textarea name="rem" id="rem" class="form-control"  required>
+            </textarea>
+            <br>
+            <lable for="email">Enter the receiver Email:
+            </lable>
+            <input type="email" name="email" id="email" class="form-control" required>
+            <br>
+            <input type=submit class="form-control"  value=ADD>
+            <br>
+            </form>
+{% if cur != None %}
+<table  class="table table-dark table-striped" id="t">
+    <thead>
+      <tr>
+        <th>DATE</th>
+        <th>REM</th>
+        <th>RECEIVER</th>
+        <th>DELETE</th>
+              </tr>
+    </thead>
+    <tbody>
+{% for i in cur %}
+    <tr>
+        <td>{{ i[1] }}</td>
+        <td>{{ i[2] }}</td>
+        <td>{{ i[3] }}</td>
+        <td><a href="{{ url_for("delete", text = i[2]) }}">DELETE</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+
+<script>
+function myFunction() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("s");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("t");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
+</body>
+</html>
